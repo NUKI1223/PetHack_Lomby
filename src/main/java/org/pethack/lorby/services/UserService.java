@@ -1,5 +1,6 @@
 package org.pethack.lorby.services;
 
+import jakarta.transaction.Transactional;
 import org.pethack.lorby.model.User;
 import org.pethack.lorby.model.UserImpDetails;
 import org.pethack.lorby.repository.UserRepository;
@@ -29,4 +30,6 @@ public class UserService implements UserDetailsService {
         ));
         return UserImpDetails.build(user);
     }
+
+
 }
