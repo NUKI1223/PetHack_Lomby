@@ -1,6 +1,6 @@
 package org.pethack.lorby.config;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.hibernate.annotations.Comments;
 import org.pethack.lorby.model.UserImpDetails;
@@ -24,4 +24,8 @@ public class JwtCore {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
+    public String getNameFromJwt(String token){
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+
 }
