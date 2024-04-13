@@ -17,7 +17,7 @@ public class JwtCore {
     private String secret;
     @Value("${testing.app.lifetime}")
     private int lifetime;
-    public  String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication){
         UserImpDetails userImpDetails = (UserImpDetails) authentication.getPrincipal();
         return Jwts.builder().setSubject((userImpDetails.getUsername())).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + lifetime))

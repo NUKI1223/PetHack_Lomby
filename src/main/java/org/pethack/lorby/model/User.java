@@ -1,13 +1,13 @@
 package org.pethack.lorby.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
 
-import javax.validation.constraints.Min;
 import java.util.Collection;
 import java.util.Set;
 
@@ -20,12 +20,8 @@ public class User {
     private Long id;
     @Column
     private String email;
-
     @Column
-    @Min(8)
     private String password;
-    @Transient
-    private String passwordConfirm;
 
 
 }
