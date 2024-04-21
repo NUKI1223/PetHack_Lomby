@@ -1,9 +1,9 @@
-package org.pethack.lorby.authRequest;
+package org.pethack.lorby.model;
 
 import lombok.Data;
 
 @Data
-public class SignupRequest {
+public class SigninRequest {
     private String email;
     private String password;
 }

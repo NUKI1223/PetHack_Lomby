@@ -22,10 +22,12 @@ public class User {
     private String email;
     @Column
     private String password;
-    @Transient
+    @Column
     private int confirmationCode;
-    @Transient
+    @Column
     private Instant codeGenerationTime;
+    @Column
+    private Boolean userConfirmed;
 
 
 }
