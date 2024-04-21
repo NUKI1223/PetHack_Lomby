@@ -2,17 +2,14 @@ package org.pethack.lorby.controller;
 
 import org.pethack.lorby.model.SigninRequest;
 import org.pethack.lorby.model.SignupRequest;
-import org.pethack.lorby.config.JwtCore;
 import org.pethack.lorby.model.User;
 import org.pethack.lorby.repository.UserRepository;
-import org.pethack.lorby.services.EmailService;
 import org.pethack.lorby.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 
 
