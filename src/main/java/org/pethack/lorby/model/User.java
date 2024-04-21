@@ -1,15 +1,12 @@
 package org.pethack.lorby.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "users")

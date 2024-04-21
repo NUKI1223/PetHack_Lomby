@@ -1,6 +1,5 @@
 package org.pethack.lorby.services;
 
-import jakarta.transaction.Transactional;
 import org.pethack.lorby.config.JwtCore;
 import org.pethack.lorby.model.SigninRequest;
 import org.pethack.lorby.model.SignupRequest;

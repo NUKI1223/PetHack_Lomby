@@ -12,31 +12,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
+
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 @RestController
 @RequestMapping("/auth")
 public class SecurityController {
     private UserService userService;
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private AuthenticationManager authenticationManager;
-    private JwtCore jwtCore;
-    private EmailService emailService;
 
-    @Autowired
-    public void setEmailService(EmailService emailService) {
-        this.emailService = emailService;
-    }
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -45,18 +34,7 @@ public class SecurityController {
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-    @Autowired
-    public void setJwtCore(JwtCore jwtCore) {
-        this.jwtCore = jwtCore;
-    }
+
 
 
     @PostMapping("/signup")
