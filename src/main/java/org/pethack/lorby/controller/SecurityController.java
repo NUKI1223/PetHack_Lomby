@@ -1,5 +1,6 @@
 package org.pethack.lorby.controller;
 
+import org.pethack.lorby.model.ActivationCodeForm;
 import org.pethack.lorby.model.SigninRequest;
 import org.pethack.lorby.model.SignupRequest;
 import org.pethack.lorby.model.User;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -51,27 +53,34 @@ public class SecurityController {
 
         userService.signUp(signupRequest);
         model.addAttribute("message", "Activate code");
-        return "activate";
+        return "redirect:/activate";
     }
     @PostMapping("/signin")
     ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest){
         return userService.signIn(signinRequest);
     }
-    @PostMapping("/check-code")
-    public ResponseEntity<String> checkConfirmationCode(@RequestParam String email, @RequestParam int enteredCode) {
-        Optional<User> optionalUser = userRepository.findUserByEmail(email);
+
+    @GetMapping("/activate")
+    public String showActivationForm(Model model) {
+        model.addAttribute("activationCode", new ActivationCodeForm());
+        return "activate";
+    }
+    @PostMapping("/activate")
+    public String checkConfirmationCode(@ModelAttribute("activationCode") ActivationCodeForm activationCodeForm, Model model, BindingResult result) {
+        Optional<User> optionalUser = userRepository.findUsersByConfirmationCode(Integer.parseInt(activationCodeForm.getCode()));
         User user = optionalUser.get();
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь с такой электронной почтой не найден.");
+            result.rejectValue("code", "error.activationCode", "Неверный код");
         }
-        boolean isCodeValid = userService.checkConfirmationCode(user, enteredCode);
+        boolean isCodeValid = userService.checkConfirmationCode(user, Integer.parseInt(activationCodeForm.getCode()));
         if (isCodeValid) {
             user.setUserConfirmed(true); // пользователь теперь подтвержден
             userRepository.save(user);
-            return ResponseEntity.ok("Регистрация успешно подтверждена!");
+            model.addAttribute("message", "Your account has been activated successfully. You can now log in.");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Недействительный код подтверждения или время действия кода истекло.");
+            result.rejectValue("code", "error.activationCode", "Неверный код или истек срок его действия");
         }
+        return "signin";
     }
 }
 

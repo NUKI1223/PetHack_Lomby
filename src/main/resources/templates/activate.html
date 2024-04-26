@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>Activate Account</h1>
-<form th:action="@{/activate}" th:object="${activationCode}" method="post">
+<form th:action="@{/auth/activate}" th:object="${activationCode}" method="post">
     <label for="code">Activation Code:</label>
     <input type="text" id="code" th:field="*{code}" required />
     <br />
