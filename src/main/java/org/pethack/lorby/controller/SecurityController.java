@@ -11,10 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 
 
 import java.util.Optional;
@@ -55,9 +58,29 @@ public class SecurityController {
         model.addAttribute("message", "Activate code");
         return "redirect:/activate";
     }
-    @PostMapping("/signin")
-    ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest){
-        return userService.signIn(signinRequest);
+    @GetMapping("/signIn")
+    public String showLoginForm(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "signIn";
+    }
+    @PostMapping("/signIn")
+    public String signIn(@ModelAttribute("user") User user, BindingResult result, Model model){
+
+        try {
+            SigninRequest signinRequest = new SigninRequest();
+            signinRequest.setEmail(user.getEmail());
+            signinRequest.setPassword(user.getPassword());
+            userService.signIn(signinRequest);
+            // Successful login logic here
+            return "redirect:/";
+        } catch (BadCredentialsException e) {
+            result.rejectValue("password", "error.user", "Invalid password.");
+        } catch (DisabledException e) {
+            result.rejectValue("email", "error.user", "User account is disabled.");
+        }
+
+        return "signIn";
     }
 
     @GetMapping("/activate")
@@ -80,7 +103,7 @@ public class SecurityController {
         } else {
             result.rejectValue("code", "error.activationCode", "Неверный код или истек срок его действия");
         }
-        return "signin";
+        return "redirect:/signIn";
     }
 }
 
