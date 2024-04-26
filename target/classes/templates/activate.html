@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Activate Account</title>
+</head>
+<body>
+<h1>Activate Account</h1>
+<form th:action="@{/activate}" th:object="${activationCode}" method="post">
+    <label for="code">Activation Code:</label>
+    <input type="text" id="code" th:field="*{code}" required />
+    <br />
+    <button type="submit">Activate</button>
+</form>
+</body>
+</html>
