@@ -10,13 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Optional;
 
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class SecurityController {
     private UserService userService;
@@ -34,15 +36,22 @@ public class SecurityController {
 
 
 
-    @PostMapping("/signup")
-    ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest){
+    @GetMapping("/signUp")
+    public String showRegistrationForm(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "signUp";
+    }
+    @PostMapping("/signUp")
+    public String signUp(@ModelAttribute("user") SignupRequest signupRequest, Model model){
+
         if(userRepository.existsByEmail(signupRequest.getEmail())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Выберите другой email");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Выберите другой email").toString();
         }
 
         userService.signUp(signupRequest);
-
-        return ResponseEntity.ok("Код выслан на вашу почту");
+        model.addAttribute("message", "Activate code");
+        return "activate";
     }
     @PostMapping("/signin")
     ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest){
